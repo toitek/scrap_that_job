@@ -60,25 +60,27 @@ async function scrapeJobs(url: string) {
   
     // Log the job information to the console
     console.log(jobs);
-  };
-
-  // Extract the job information from the current page
-  await extractJobs();
-
-  // Check if there is a "next" button to paginate to the next page
+      // Check if there is a "next" button to paginate to the next page
   const nextButtonSelector = '.pagination-next';
   if (await page.$(nextButtonSelector)) {
-    // If the "next" button exists, click it and extract the job information from the next page
-    while (await page.$(nextButtonSelector)) {
-      await page.click(nextButtonSelector);
-      await page.waitForSelector(nextButtonSelector);
-      await extractJobs();
-    }
+    // Click the "next" button
+    await page.click(nextButtonSelector);
+
+    // Wait for the page to load
+    await page.waitForNavigation();
+
+    // Extract the job information from the next page
+    await extractJobs();
+  } else {
+    // Close the browser
+    await browser.close();
   }
-
-  // Close the browser and end the Puppeteer session
-  await browser.close();
 }
-  
 
-  scrapeJobs('https://www.builtinnyc.com/jobs');
+// Extract the job information from the current page
+await extractJobs();
+
+};
+
+
+scrapeJobs('https://www.example.com/careers');
