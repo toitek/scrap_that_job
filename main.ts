@@ -8,9 +8,7 @@ async function scrapeJobs(url: string) {
     const page = await browser.newPage();
     // Navigate to the given URL
     await page.goto(url);
-    // Write the scraping logic here
-    // ...
-    // Close the browser when you're done
+    
     await browser.close();
   }
   
